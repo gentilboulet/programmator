@@ -1,0 +1,23 @@
+# Use new trusty images, should yield newer compilers and packages
+sudo: required
+dist: precise
+language: cpp
+
+addons:
+    apt:
+        sources:
+            - boost-latest
+            - llvm-toolchain-precise
+            - ubuntu-toolchain-r-test
+            - george-edison55-precise-backports
+        packages:
+            - clang-3.7
+            - cmake
+            - cmake-data
+            - libboost-all-dev
+script:
+            - cmake --version
+            - mkdir build
+            - cd build
+            - cmake .. && make
+            - ctest

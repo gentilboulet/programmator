@@ -7,7 +7,7 @@ BOOST_AUTO_TEST_SUITE( UT_Empty )
 
 BOOST_AUTO_TEST_CASE( True )
 {
-    BOOST_TEST( true );
+    BOOST_CHECK( true );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

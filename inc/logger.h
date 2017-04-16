@@ -1,6 +1,8 @@
 #include <mutex>
 #include <string>
 
+#pragma once
+
 class Log
 {
     public:

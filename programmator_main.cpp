@@ -1,8 +1,11 @@
-#include "boost/program_options.hpp"
+#include <boost/program_options.hpp>
 
 #include <iostream>
 #include <string>
+
 #include <logger.h>
+#include <screening.h>
+#include <configuration.h>
 
 namespace 
 {
@@ -13,9 +16,9 @@ namespace
 
 int main(int argc, char** argv) 
 {
-    Log log_warnings {"","main", Log::level::warning};
-    Log log_errors{"","main", Log::level::error};
-    Log log_debug{"","main", Log::level::debug};
+    Log log_warnings {"","main()", Log::level::warning};
+    Log log_errors{"","main()", Log::level::error};
+    Log log_debug{"","main()", Log::level::debug};
     try 
     {
         namespace po = boost::program_options; 
@@ -41,7 +44,7 @@ int main(int argc, char** argv)
                 std::cout << cmd_line << std::endl;
                 return SUCCESS; 
             }
-            if( vm.count("verbose") )
+            if( vm.count("verbose"))
             {
                 verbose=true;
                 Log::set_min_level(Log::level::debug);
@@ -50,6 +53,10 @@ int main(int argc, char** argv)
 
             log_debug << "verbosity ? " + std::to_string(verbose);
             log_debug << "config_path ? " + config_path;
+        
+            Configuration l_configuration(config_path);
+            Screening::init_tree(l_configuration.screenings_path()); 
+
         }    
         catch(po::error& e) 
         { 

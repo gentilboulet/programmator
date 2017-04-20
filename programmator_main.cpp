@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 
+#include <place.h>
 #include <logger.h>
 #include <screening.h>
 #include <configuration.h>
@@ -16,9 +17,7 @@ namespace
 
 int main(int argc, char** argv) 
 {
-    Log log_warnings {"","main()", Log::level::warning};
-    Log log_errors{"","main()", Log::level::error};
-    Log log_debug{"","main()", Log::level::debug};
+    LOGGERS("","main()");
     try 
     {
         namespace po = boost::program_options; 
@@ -55,19 +54,20 @@ int main(int argc, char** argv)
             log_debug << "config_path ? " + config_path;
         
             Configuration l_configuration(config_path);
+            Place::disallow_places(l_configuration.disallowed_places());
             Screening::init_tree(l_configuration.screenings_path()); 
 
         }    
         catch(po::error& e) 
         { 
-            log_errors << e.what() ;
+            log_error << e.what() ;
             std::cout << cmd_line << std::endl;
             return ERROR_IN_COMMAND_LINE; 
         } 
     }
     catch(std::exception& e) 
     { 
-        log_errors << "Unhandled Exception reached the top of main: " 
+        log_error << "Unhandled Exception reached the top of main: " 
             << e.what() << ", application will now exit" ;
         return ERROR_UNHANDLED_EXCEPTION; 
 

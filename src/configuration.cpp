@@ -10,8 +10,7 @@ namespace fs=boost::filesystem;
 
 Configuration::Configuration(const fs::path& a_path) : m_config_json{a_path}
 {
-    Log log_info{"Configuration","Configuration()", Log::level::info};
-    Log log_error{"Configuration","Configuration()", Log::level::error};
+    LOGGERS("Configuration()","Configuration()");
 
     if(!boost::filesystem::exists( m_config_json) )
     {
@@ -26,5 +25,5 @@ Configuration::Configuration(const fs::path& a_path) : m_config_json{a_path}
 
     m_screenings = fs::path{ l_ptree.get<std::string> ("screenings") };
     
-    log_info << "screenings path : " + m_screenings.string();
+    log_debug << "screenings path : " + m_screenings.string();
 }
